@@ -43,13 +43,15 @@ import com.hp.hpl.jena.query.QueryExecutionFactory;
 import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.sparql.engine.http.QueryEngineHTTP;
+import com.hp.hpl.jena.sparql.util.Timer;
+import com.kasabi.labs.datasets.Utils;
 
 public class Links {
 
 	public static final String KASABI_API_KEY = System.getenv("KASABI_API_KEY_DEMO");
 	private static final Map<String, Set<Query>> queries = new HashMap<String, Set<Query>>();
 	private static final Logger log = LoggerFactory.getLogger(Links.class) ;
-	private static final int OFFSET_INCREMENT = 10000 ;
+	private static final int OFFSET_INCREMENT = 100000 ;
 
 	public static void main(String[] args) throws IOException {
 		Dataset ds = DatasetFactory.createMem();
@@ -64,17 +66,27 @@ public class Links {
 					long results = -1;
 					int i = 0;
 					while ( results != 0 ) {
-						query.setLimit(OFFSET_INCREMENT);
-						query.setOffset(i * OFFSET_INCREMENT);
-						log.debug("Offset is {} and limit is {}", i * OFFSET_INCREMENT, OFFSET_INCREMENT);
-						QueryExecution qexec = QueryExecutionFactory.sparqlService("http://api.kasabi.com/dataset/" + dataset + "/apis/sparql", query);
-						((QueryEngineHTTP) qexec).addParam("apikey", KASABI_API_KEY);
-						Model result = qexec.execConstruct();
-						results = result.size();
-			            model.add ( result );
-			            log.info("Retrieved {} triples...", results);
-			            qexec.close();
-			            i++;
+						try {
+							Timer timer = new Timer();
+							timer.startTimer();
+							query.setLimit(OFFSET_INCREMENT);
+							query.setOffset(i * OFFSET_INCREMENT);
+							log.debug("Offset is {} and limit is {}", i * OFFSET_INCREMENT, OFFSET_INCREMENT);
+							QueryExecution qexec = QueryExecutionFactory.sparqlService("http://api.kasabi.com/dataset/" + dataset + "/apis/sparql", query);
+							((QueryEngineHTTP) qexec).addParam("apikey", KASABI_API_KEY);
+							Model result = qexec.execConstruct();
+							results = result.size();
+				            model.add ( result );
+				            log.info("Retrieved {} triples in {} seconds ...", results, (timer.endTimer() / 1000));
+				            qexec.close();
+				            i++;							
+						} catch ( Exception e ) {
+							log.error(e.getMessage(), e);
+							results = 0;
+						} catch ( Throwable t ) {							
+							log.error(t.getMessage(), t);
+							results = 0;
+						}
 					}
 				}
 			}
