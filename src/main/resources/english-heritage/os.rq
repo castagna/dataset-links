@@ -1,0 +1,22 @@
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX os-geo: <http://data.ordnancesurvey.co.uk/ontology/geometry/>
+PREFIX os-spatial: <http://data.ordnancesurvey.co.uk/ontology/spatialrelations/>
+PREFIX ov: <http://open.vocab.org/terms/>
+CONSTRUCT {
+   ?s os-geo:extent ?extent .
+   ?s os-spatial:easting ?easting .
+   ?s os-spatial:within ?within .
+   ?s os-spatial:northing ?northing .
+   ?s os-spatial:oneKMGridReference ?oneKMGridReference .
+   ?s ov:national-grid-reference ?national_grid_reference .
+} WHERE {
+   ?s os-geo:extent ?extent .
+   ?s os-spatial:easting ?easting .
+   ?s os-spatial:within ?within .
+   ?s os-spatial:northing ?northing .
+   ?s os-spatial:oneKMGridReference ?oneKMGridReference .
+   ?s ov:national-grid-reference ?national_grid_reference .
+}
+
+

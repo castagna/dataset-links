@@ -1,0 +1,9 @@
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+CONSTRUCT {
+   ?s owl:sameAs ?o .
+} WHERE {
+   ?s <http://statistics.data.gov.uk/def/administrative-geography/country> <http://data.kasabi.com/dataset/yahoo-geoplanet/country/gb> .
+   ?s rdf:type <http://data.kasabi.com/dataset/yahoo-geoplanet/schema/Zip> .
+   ?s owl:sameAs ?o .
+}

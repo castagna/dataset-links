@@ -1,0 +1,5 @@
+CONSTRUCT {
+  ?s <http://data.ordnancesurvey.co.uk/ontology/postcode/postcode> ?o .
+} WHERE {
+  ?s <http://data.ordnancesurvey.co.uk/ontology/postcode/postcode> ?o .
+}
