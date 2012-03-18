@@ -44,7 +44,6 @@ import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.sparql.engine.http.QueryEngineHTTP;
 import com.hp.hpl.jena.sparql.util.Timer;
-import com.kasabi.labs.datasets.Utils;
 
 public class Links {
 
